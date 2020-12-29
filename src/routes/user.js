@@ -122,7 +122,7 @@ router.get("/account/activate/:id", async (req, res) => {
     user.activationString = null;
     user.isActivated = true;
     await user.save();
-    res.status(200).json(user);
+    res.redirect(`https://m-drive-ui.herokuapp.com/login`);
   } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
@@ -147,7 +147,9 @@ router.post("/forgot/password", activated, async (req, res) => {
 // @access    Public
 router.get("/forgot/password/redirect/:id", async (req, res) => {
   try {
-    res.redirect(`http://localhost:3000/reset/password/${req.params.id}`);
+    res.redirect(
+      `https://m-drive-ui.herokuapp.com/reset/password/${req.params.id}`
+    );
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");

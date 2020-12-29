@@ -38,7 +38,7 @@ async function sendMail(user, type) {
       let info = await transporter.sendMail({
         from: `M-Drive <${process.env.MAIL_USERNAME}>`,
         to: `${email}`,
-        subject: `Activate your account`,
+        subject: `Reset Password`,
         html: `<h3>Hi ${first_name} ${last_name}</h3><br/>
             <p>Here's your reset password link.</p>
             <p>http://localhost:5000/api/users/forgot/password/redirect/${_id}</p>`,
