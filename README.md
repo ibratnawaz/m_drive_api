@@ -15,6 +15,28 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
 
 # API Usage & Endpoints
 
+## Check User Login [POST /api/users/]
+
+- Request: Check wether the user is logged in or not
+
+  - Headers
+
+        Authorization: YOUR_JWT
+
+* Response: 200 (application/json)
+
+  - Body
+
+          {
+            "_id": "",
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "createdAt": "",
+            "updatedAt": "",
+            "__v": ""
+          }
+
 ## Register a User [POST /api/users/register]
 
 - Request: Add user and send email for account activation
@@ -40,7 +62,7 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
             "user": ""
           }
 
-## Login with a User [POST /api/users/login]
+## Login a User [POST /api/users/login]
 
 - Request: Login with credentials to receive a JSON web token
 
@@ -72,7 +94,7 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
 
         Authorization: YOUR_JWT
 
-* Response: 200 (application/json)
+- Response: 200 (application/json)
 
   - Body
 
@@ -122,7 +144,7 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
 
         Authorization: YOUR_JWT
 
-* Response: 200 (application/json)
+- Response: 200 (application/json)
 
   - Body
 
@@ -142,7 +164,7 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
   It is one time activation link i.e. on Next click link
   will be expired.
 
-* Response: 200 (application/json)
+- Response: 200 (application/json)
 
   - Body
 
@@ -155,3 +177,40 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
             "updatedAt": "",
             "__v": ""
           }
+
+## Reset Account Password [POST /api/users/forgot/password]
+
+- Request: Reset account password by sending the reset link to
+  the user e-mail id.
+
+- Response: 200 (application/json)
+
+  - Body
+
+          "Reset password link send to your e-mail account"
+
+## Redirect [GET /forgot/password/redirect/:id]
+
+- Request: Redirect the user to the reset password UI so that
+  user can reset the password.
+
+## Update Account Password [PUT /api/users/reset/password]
+
+- Request: Reset account password.
+
+  - Headers
+
+        Content-type: application/json
+
+  - Body
+
+            {
+              "_id_": "",
+              "password": ""
+            }
+
+- Response: 200 (application/json)
+
+  - Body
+
+          "Password updated successfully"

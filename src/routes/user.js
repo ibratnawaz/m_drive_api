@@ -3,9 +3,21 @@ const bcrypt = require("bcryptjs");
 const User = require("../models/User");
 const activated = require("../middleware/activated");
 const auth = require("../middleware/auth");
-const activate = require("../middleware/activate_acc");
+const sendMail = require("../helpers/sendMail");
 
 const router = new express.Router();
+
+// @route     GET api/users/
+// @desc      Get logged in user
+// @access    Private
+router.get("/", auth, async (req, res) => {
+  try {
+    res.status(200).json(req.user);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 // @route     POST api/users/register
 // @desc      Register a user
@@ -15,7 +27,7 @@ router.post("/register", async (req, res) => {
 
   try {
     await user.save();
-    activate(user, "activate");
+    sendMail(user, "activate");
     res.status(201).json({ user });
   } catch (error) {
     console.log(error);
@@ -114,6 +126,53 @@ router.get("/account/activate/:id", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json("Internal server error");
+  }
+});
+
+// @route     GET api/users/forgot/password
+// @desc      send link to the registered user to reset password
+// @access    Public
+router.post("/forgot/password", activated, async (req, res) => {
+  try {
+    sendMail(req.user, "reset");
+    res.status(200).json("Reset password link send to your e-mail account");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// @route     GET api/users/forgot/password/redirect/:id
+// @desc      redirect user to the reset password ui
+// @access    Public
+router.get("/forgot/password/redirect/:id", async (req, res) => {
+  try {
+    res.redirect(`http://localhost:3000/reset/password/${req.params.id}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// @route     GET api/users/reset/password
+// @desc      update the password
+// @access    Private
+router.put("/reset/password", async (req, res) => {
+  try {
+    const { password, _id } = req.body;
+    const user = await User.findById({ _id });
+
+    if (!user) {
+      return res
+        .status(400)
+        .json("No user found. Request new link to reset password.");
+    }
+    user.password = password;
+    user.save();
+    res.status(200).json("Password updated successfully");
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
