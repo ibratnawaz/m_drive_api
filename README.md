@@ -1,4 +1,4 @@
-# Contact Keeper API
+# M-Drive API
 
 This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT authentication. All private endpoints are protected using JWT. It is the API ONLY. The fullstack app can be found [here](https://github.com/nawazibrat/M-Drive)
 
@@ -78,7 +78,7 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
 
           "logout successfully"
 
-## Logout (from all devices) [POST /api/users/logoutAll]
+## Logout (from all devices) [GET /api/users/logoutAll]
 
 - Request: Logout user from all devices
 
@@ -92,7 +92,7 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
 
           "Logged out from All devices"
 
-## Get User Profile [PUT /api/users/me]
+## Get User Profile [GET /api/users/me]
 
 - Request: Get user profile details
 
