@@ -214,3 +214,26 @@ This is a Node/Express/MongoDB REST API for M-Drive application that uses JWT au
   - Body
 
           "Password updated successfully"
+
+## Upload File [POST /api/users/upload]
+
+- Request: Upload and store file to AWS S3.
+
+  - Headers
+
+        Authorization: YOUR_JWT
+
+  - Body (in form-data)
+
+            KEY:file (type-file) VALUE: YOUR_FILE
+
+- Response: 200 (application/json)
+
+  - Body
+
+          {
+            "ETag": "",
+            "Location": "",
+            "key": "",
+            "Key": ""
+          }

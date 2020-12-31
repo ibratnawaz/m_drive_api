@@ -1,5 +1,9 @@
+require("dotenv").config();
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const multer = require("multer");
+const AWS = require("aws-sdk");
+const { v4: uuidv4 } = require("uuid");
 const User = require("../models/User");
 const activated = require("../middleware/activated");
 const auth = require("../middleware/auth");
@@ -176,6 +180,42 @@ router.put("/reset/password", async (req, res) => {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
+});
+
+// @route     GET api/users/upload
+// @desc      upload files/folders to aws s3
+// @access    Private
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY,
+  secretAccessKey: process.env.AWS_SECRET_KEY,
+});
+
+const storage = multer.memoryStorage({
+  destination: function (req, file, callback) {
+    callback(null, "");
+  },
+});
+
+const upload = multer({ storage }).single("file");
+
+router.post("/upload", [auth, upload], (req, res) => {
+  let myFile = req.file.originalname.split(".");
+  const fileType = myFile[myFile.length - 1];
+
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: `${uuidv4()}.${fileType}`,
+    Body: req.file.buffer,
+  };
+
+  s3.upload(params, (error, data) => {
+    if (error) {
+      console.log(error);
+      return res.status(500).send(error);
+    }
+    delete data.Bucket;
+    res.status(200).send(data);
+  });
 });
 
 module.exports = router;
