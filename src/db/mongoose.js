@@ -1,8 +1,17 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
-const dbUrl = process.env.MONGODB_URL || "mongodb://127.0.0.1:27017/my-drive";
-mongoose.connect(dbUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
+const connectDB = async () => {
+  try {
+    const conn = await mongoose.connect(process.env.MONGODB_URL, {
+      useUnifiedTopology: true,
+      useNewUrlParser: true,
+      useCreateIndex: true,
+    })
+    console.log(`MongoDB Connected: ${conn.connection.host}`)
+  } catch (error) {
+    console.log(`Connection Error: ${error.message}`)
+    process.exit(1)
+  }
+}
+
+module.exports = connectDB
