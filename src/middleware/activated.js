@@ -6,7 +6,9 @@ async function userActivated(req, res, next) {
     const user = await User.findOne({ email })
 
     if (!user) {
-      return res.status(400).json('No account with this email found...')
+      return res
+        .status(400)
+        .json({ error: 'No account with this email found...' })
     }
 
     if (!user.isActivated) {
