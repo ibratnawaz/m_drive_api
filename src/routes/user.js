@@ -20,7 +20,7 @@ router.get('/', auth, async (req, res) => {
     res.status(200).json(req.user)
   } catch (error) {
     console.error(error)
-    res.status(500).send('Internal Server Error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
@@ -58,7 +58,7 @@ router.post('/login', [activated], async (req, res) => {
     res.status(200).json({ user: req.user, token })
   } catch (error) {
     console.log(error)
-    res.status(500).json('Internal server error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
@@ -75,7 +75,7 @@ router.get('/logout', auth, async (req, res) => {
     res.status(200).json('logout successfully')
   } catch (error) {
     console.log(error)
-    res.status(500).json('Internal server error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
@@ -89,7 +89,7 @@ router.get('/logoutAll', auth, async (req, res) => {
     res.status(200).json('Logged out from All devices')
   } catch (e) {
     console.log(error)
-    res.status(500).json('Internal server error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
@@ -111,7 +111,7 @@ router.put('/me', auth, async (req, res) => {
     res.status(200).json(req.user)
   } catch (error) {
     console.log(error)
-    res.status(500).json('Internal server error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
@@ -130,7 +130,7 @@ router.get('/account/activate/:id', async (req, res) => {
     res.redirect(`https://m-drive-ui.herokuapp.com/login`)
   } catch (error) {
     console.log(error)
-    res.status(500).json('Internal server error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
@@ -143,7 +143,7 @@ router.post('/forgot/password', activated, async (req, res) => {
     res.status(200).json('Reset password link send to your e-mail account')
   } catch (error) {
     console.error(error)
-    res.status(500).send('Internal Server Error')
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 })
 
